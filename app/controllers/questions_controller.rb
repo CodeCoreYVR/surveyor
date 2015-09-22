@@ -1,8 +1,10 @@
 class QuestionsController < ApplicationController
   before_action :find_survey
+  DEFAULT_ANSWER_COUNT = 3
 
   def new
     @question = Question.new
+    DEFAULT_ANSWER_COUNT.times { @question.answers.build }
   end
 
   def create
@@ -22,6 +24,7 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title)
+    params.require(:question).permit(:title,
+                                     answers_attributes: [:body, :id, :_destroy])
   end
 end

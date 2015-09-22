@@ -1,7 +1,22 @@
+<% if @question.errors.any? %>
+  <ul>
+    <% @question.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
 <%= form_for [@survey, @question] do |f| %>
   <div>
     <%= f.label :title %>
     <%= f.text_field :title %>
+  </div>
+  <h2>Answers</h2>
+  <%= f.fields_for :answers do |a| %>
+    <%= render "answer_fields", f: a %>
+  <% end %>
+  <div class="links">
+    <%= link_to_add_association 'add answer', f, :answers %>
   </div>
   <div>
     <%= f.submit %>
